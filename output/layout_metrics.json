@@ -1,0 +1,107 @@
+[
+  {
+    "physical_page": 2,
+    "body_page": 1,
+    "title": "摘　要",
+    "used_height": 562.8,
+    "remaining_height": 157.2
+  },
+  {
+    "physical_page": 3,
+    "body_page": 2,
+    "title": "1　实习任务与评价设计",
+    "used_height": 612.7,
+    "remaining_height": 107.3
+  },
+  {
+    "physical_page": 4,
+    "body_page": 3,
+    "title": "3　极暗 RAW 图像增强",
+    "used_height": 598.8,
+    "remaining_height": 121.2
+  },
+  {
+    "physical_page": 5,
+    "body_page": 4,
+    "title": "3　极暗 RAW 图像增强（续）",
+    "used_height": 661.8,
+    "remaining_height": 58.2
+  },
+  {
+    "physical_page": 6,
+    "body_page": 5,
+    "title": "3　极暗 RAW 图像增强（续）",
+    "used_height": 627.77,
+    "remaining_height": 92.23
+  },
+  {
+    "physical_page": 7,
+    "body_page": 6,
+    "title": "3　极暗 RAW 图像增强（续）",
+    "used_height": 612.39,
+    "remaining_height": 107.61
+  },
+  {
+    "physical_page": 8,
+    "body_page": 7,
+    "title": "4　文档几何校正",
+    "used_height": 538.0,
+    "remaining_height": 182.0
+  },
+  {
+    "physical_page": 9,
+    "body_page": 8,
+    "title": "4　文档几何校正（续）",
+    "used_height": 675.1,
+    "remaining_height": 44.9
+  },
+  {
+    "physical_page": 10,
+    "body_page": 9,
+    "title": "4　文档几何校正（续）",
+    "used_height": 646.92,
+    "remaining_height": 73.08
+  },
+  {
+    "physical_page": 11,
+    "body_page": 10,
+    "title": "5　图像压缩与率失真分析",
+    "used_height": 578.4,
+    "remaining_height": 141.6
+  },
+  {
+    "physical_page": 12,
+    "body_page": 11,
+    "title": "5　图像压缩与率失真分析（续）",
+    "used_height": 654.6,
+    "remaining_height": 65.4
+  },
+  {
+    "physical_page": 13,
+    "body_page": 12,
+    "title": "5　图像压缩与率失真分析（续）",
+    "used_height": 682.6,
+    "remaining_height": 37.4
+  },
+  {
+    "physical_page": 14,
+    "body_page": 13,
+    "title": "6　综合讨论",
+    "used_height": 567.0,
+    "remaining_height": 153.0
+  },
+  {
+    "physical_page": 15,
+    "body_page": 14,
+    "title": "7　实习结论与可复核性",
+    "used_height": 636.1,
+    "remaining_height": 83.9
+  },
+  {
+    "physical_page": 16,
+    "body_page": 15,
+    "title": "参考文献与数据依据",
+    "used_height": 509.0,
+    "remaining_height": 211.0
+  }
+]

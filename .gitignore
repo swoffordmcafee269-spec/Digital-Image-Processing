@@ -1,0 +1,52 @@
+# 数据（体积过大，不进版本库）
+data/
+outputs/
+artifacts/
+datasets/
+cache/
+
+# 模型权重（仅 hw1 的必需权重例外，已在对应分支提交）
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.pkl
+!几何校正workbuddy2/uvdoc/UVDoc/model/best_model.pkl
+!几何校正workbuddy/DocGeoNet/model_pretrained/DocGeoNet.pth
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# 构建与临时产物
+build/
+dist/
+*.log
+*.tmp
+*.bak
+*.asv
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# 大体积归档
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+
+# AI 会话记忆（含个人记录，不入库）
+.workbuddy/
