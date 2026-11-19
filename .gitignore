@@ -1,11 +1,20 @@
-# 数据（体积过大，不进版本库）
+# 数据与运行产物（体积过大，不进版本库）
 data/
 outputs/
 artifacts/
 datasets/
 cache/
 
-# 模型权重（仅 hw1 的必需权重例外，已在对应分支提交）
+# 例外：源码包里的同名目录装的是代码（dataset.py 等），必须入库
+# 注意 gitignore 的否定规则需要先解除父目录忽略，再解除子内容
+!**/src/data/
+!**/src/data/**
+!**/code/data/
+!**/code/data/**
+!**/src/outputs/
+!**/src/outputs/**
+
+# 模型权重（hw1 的两个必需权重已在对应分支显式提交）
 *.pt
 *.pth
 *.ckpt
