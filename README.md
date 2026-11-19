@@ -1,43 +1,60 @@
-# 数字图像处理课程实习
+# hw1 · 文档图像几何校正
 
-武汉大学遥感信息工程学院 · 数字图像处理课程实习（2025 级）三项作业的代码与结果归档。
+数字图像处理实习二。对 200 张带畸变的文档照片做几何校正（去畸变 / 拉平），并与其他方法对照评价。
 
-## 分支结构
+## 方法构成
 
-三项作业的代码**互不混杂**，各自独立分支：
+| 目录 | 内容 |
+|---|---|
+| `几何校正workbuddy2/baseline/` | 方案 A：基于 mask 的传统校正——mask 轮廓 → 四角点检测 → 排序 → 透视变换拉平 |
+| `几何校正workbuddy2/uvdoc/` | UVDoc 深度学习去畸变（含预训练权重 `UVDoc/model/best_model.pkl`，30.7 MB） |
+| `几何校正workbuddy/DocGeoNet/` | DocGeoNet 对照实现（含预训练权重 `model_pretrained/DocGeoNet.pth`，90.8 MB） |
+| `几何校正workbuddy2/common/` | 图像读写工具 `imgio.py`，统一处理中文路径 |
+| `几何校正workbuddy2/eval/` | 评价脚本（见下）与结果表 |
 
-| 分支 | 作业 | 内容 |
-|---|---|---|
-| `main` | — | 总览说明、`.gitignore`、综合实习报告 |
-| `hw1-geometric-correction` | 实习二 · 文档图像几何校正 | 基线实现、UVDoc / DocGeoNet 对照、评价脚本与结果表 |
-| `hw2-image-enhancement` | 实习一 · 图像增强（RAW 色彩恢复） | v1–v5 迭代主线 + 重构版实现、配置、结果指标 |
-| `hw3-image-compression` | 实习三 · 图像压缩 | 自研 DCT 编码器、AVIF 对照、基准与绘图脚本 |
+## 评价脚本
 
-切换作业：`git checkout hw2-image-enhancement`
+按编号顺序执行：
 
-## 关于数据与权重的说明
+| 脚本 | 产出 |
+|---|---|
+| `eval/03_visual_compare.py` | 方法间可视化对比图 |
+| `eval/04_line_regularity.py` | 直线规则性指标 → `eval/metric_line_regularity.csv` |
+| `eval/05_ocr_eval.py` | OCR 可读性指标 → `eval/metric_ocr.csv` |
+| `eval/06_summary_stats.py` | 汇总统计 → `eval/summary_stats.csv` |
+| `baseline/01_baseline.py` | 基线校正结果 → `eval/baseline_log.csv` |
 
-**原始数据不在本仓库内。** 三项作业的输入数据合计约 123 GB（RAW 原图、JPEG、中间缓存、渲染产物），远超 GitHub 单文件 100 MiB / 仓库 5 GB 的建议上限，无法托管。
+结果表已在仓库内，无需重跑即可查看指标：`summary_stats.csv` 记录各指标相对原图的均值 / 中位数 / 标准差（样本数 200），并标注方向（如 curvature 越小越好、line_var 越大越好）。
 
-各分支 `README.md` 中写明了数据从哪来、解压到哪里、需要多少磁盘空间。代码、配置、依赖清单、评价脚本和结果指标表均完整保留，按说明备好数据即可复现。
+## 数据准备（必须，数据未上传）
 
-同样因体积原因未上传的还有：`hw2` 的训练检查点（单文件 188–252 MB，超过 GitHub 硬限）。
-
-## 报告
-
-`report/` 下为综合实习报告（PDF 与 DOCX 各一份），DOCX 由 `output/` 中的脚本从 Markdown 与图表源生成。
-
-## 目录
+`GeoCorrection.zip`（约 790 MB）解压到：
 
 ```
-├── README.md                      本文件
-├── .gitignore
-├── report/
-│   ├── 数字图像处理课程实习报告.pdf
-│   ├── 数字图像处理综合实习报告_修订版.docx
-│   ├── src/                       报告生成与校对脚本
-│   └── ...
-└── output/                        报告构建产物与图表
+几何校正workbuddy2/GeoCorrection/_extract/GeoCorrection/
+├── images/   200 张畸变文档图（.jpg）
+└── mask/     200 张同名二值掩码（.png，文档区域为 255）
 ```
 
-分支内另见各作业的独立说明。
+脚本通过 `ROOT/GeoCorrection/_extract/GeoCorrection/images` 定位输入，路径不对会直接报错。
+
+## 环境
+
+Python 3.13 实测。`requirements-lock.txt` 为从实际 venv 精确导出的 32 个包（含版本号）。
+
+```bash
+python -m venv venv && source venv/bin/activate      # Windows: venv\Scripts\activate
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install -r requirements-lock.txt
+```
+
+无 GPU 可用 CPU 版 torch，UVDoc 推理会自动回退，仅速度变慢。
+
+## 本分支未包含
+
+- `GeoCorrection/*.zip`（790 MB，超单文件限制）与解压后的 `images/` `mask/`（约 1.6 GB）
+- `venv/`（4.5 GB，已导出为 `requirements-lock.txt`）
+- `_作业题目.txt`（含提交邮箱，不上传）
+- 与 `几何校正workbuddy2/` 逐字节重复的 `源代码及结果数据表格/` 打包副本
+
+更详细的安装与运行说明见 `几何校正workbuddy2/部署文档.md`，结论见 `总结文档.md`。

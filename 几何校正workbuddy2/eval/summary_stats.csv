@@ -1,0 +1,16 @@
+﻿metric,mean,median,std,n,note
+curvature_original,61.8228,52.0465,41.3183,200,越小越好
+line_var_original,0.0702,0.0694,0.0270,200,越大越好
+curvature_baseline,48.8327,49.2167,22.0326,200,越小越好
+line_var_baseline,0.0544,0.0498,0.0236,200,越大越好
+curvature_uvdoc,51.1541,50.0384,25.3300,200,越小越好
+line_var_uvdoc,0.0518,0.0476,0.0197,200,越大越好
+ocr_chars_original,565.1,354.5,614.7,200,越多越好
+ocr_lines_original,37.6,34.0,28.3,200,越多越好
+ocr_conf_original,0.7533,0.7735,0.1157,200,越高越好
+ocr_chars_baseline,617.0,386.0,637.7,200,越多越好
+ocr_lines_baseline,42.0,40.5,27.0,200,越多越好
+ocr_conf_baseline,0.7606,0.7769,0.1272,200,越高越好
+ocr_chars_uvdoc,798.9,545.0,740.8,200,越多越好
+ocr_lines_uvdoc,47.0,44.0,26.9,200,越多越好
+ocr_conf_uvdoc,0.7769,0.7979,0.1064,200,越高越好
