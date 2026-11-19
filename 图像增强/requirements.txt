@@ -1,0 +1,13 @@
+# 核心依赖
+# 注意：torch 需按本机 CUDA 版本安装，见 README.md「环境依赖」一节
+torch>=2.0
+torchvision>=0.15
+numpy>=1.24
+opencv-python>=4.7
+scikit-image>=0.21
+lpips>=0.1.4
+rawpy>=0.19
+pillow>=9.5
+matplotlib>=3.7
+tqdm>=4.65
+pyyaml>=6.0

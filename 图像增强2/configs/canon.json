@@ -1,0 +1,27 @@
+{
+  "data_root": "D:/BaiduNetdiskDownload/BIED",
+  "artifact_root": "artifacts",
+  "camera": "Canon",
+  "height": 2160,
+  "width": 3840,
+  "black_level": 512,
+  "seed": 20261021,
+  "model": {"base_channels": 32, "levels": 4},
+  "train": {
+    "patch_size": 256,
+    "batch_size": 4,
+    "num_workers": 4,
+    "learning_rate": 0.0002,
+    "weight_decay": 0.00001,
+    "steps": 30000,
+    "warmup_steps": 500,
+    "validate_every": 2000,
+    "checkpoint_every": 500,
+    "max_hours": 10,
+    "ssim_weight": 0.1,
+    "chroma_weight": 0.05,
+    "perceptual_weight": 0.0,
+    "amp": true
+  },
+  "eval": {"lpips_net": "alex", "png_compress_level": 1, "cpu_threads": 8}
+}

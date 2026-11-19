@@ -1,0 +1,76 @@
+# =====================================================================
+# v5 · Sony 子集配置
+# 基于 configs/config.yaml（v1/v2），只改必要项。**所有输出路径都落在 v5/ 下**，
+# 与 v1/v2 的 outputs/ 完全隔离。
+#
+# 用法（项目根目录）：
+#   python v5/run.py train sony
+#   python v5/run.py eval  sony
+# =====================================================================
+
+data:
+  root: "data"
+  dataset: "Sony"
+  raw_subdir: ""
+  gt_subdir: ""
+  raw_ext: "raw"
+  gt_ext: "jpg"
+  black_level: 512
+  white_level: 16383
+  raw_width: 3840
+  raw_height: 2160
+  val_ratio: 0.1
+
+  # --- v5 新增 ---
+  # 白平衡前处理。L0 实验 B 实测 g_R 中位 1.933、裁剪率 2.2%，分布合理
+  use_wb: true
+  # 目录形式 → dataset 按 filelist 的 stem 自动拼 train/val/test 三份缓存
+  wb_cache: "v5/cache"
+
+model:
+  in_channels: 4
+  out_channels: 12
+  base_channels: 32
+  num_levels: 4
+  norm: "instance"
+
+train:
+  epochs: 50
+  batch_size: 8
+  patch_size: 512
+  lr: 0.0001
+  weight_decay: 0.0
+  num_workers: 4
+  amp: true
+  grad_clip: 1.0
+  warmup_epochs: 2
+  seed: 42
+
+  l1_weight: 1.0
+  ssim_weight: 0.15
+  perceptual: false
+  perceptual_weight: 0.05
+
+  # --- v5 新增 ---
+  # 单色度损失权重。L1+SSIM 里亮度项占绝对主导，色度梯度被淹没；
+  # 单独加一条纯色差项（Cb/Cr 域 Charbonnier）补这个缺口。
+  # 0.10 是保守起点：过高会牺牲亮度精度去换颜色，PSNR 反而掉。
+  chroma_weight: 0.10
+  # 选模主指标。val 只 100 张，PSNR 的 SE 约 0.35 dB（不显著），
+  # 所以这里仍用 psnr 为主，但同时记录 ssim 供事后重选。
+  select_metric: "psnr"
+
+  # --- 全部指向 v5，绝不碰 outputs/ ---
+  log_dir: "v5/logs/sony"
+  ckpt_dir: "v5/checkpoints/sony"
+  resume: ""
+
+eval:
+  metrics: ["psnr", "ssim", "lpips"]
+  lpips_net: "alex"
+  # 画像与 CSV 都写到 v5/results/sony/ 下
+  output_dir: "v5/results/sony"
+  save_images: true
+  num_samples: 4
+  run_baseline: true
+  baseline_method: "clahe"

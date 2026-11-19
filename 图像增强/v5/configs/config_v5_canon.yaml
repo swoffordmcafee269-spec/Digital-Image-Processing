@@ -1,0 +1,66 @@
+# =====================================================================
+# v5 · Canon 子集配置
+# 与 config_v5.yaml 同参数，仅 dataset / 路径 / Canon 特有的损失权重不同。
+#
+# 用法（项目根目录）：
+#   python v5/run.py train canon
+#   python v5/run.py eval  canon
+# =====================================================================
+
+data:
+  root: "data"
+  dataset: "Canon"
+  raw_subdir: ""
+  gt_subdir: ""
+  raw_ext: "raw"
+  gt_ext: "jpg"
+  black_level: 512
+  white_level: 16383
+  raw_width: 3840
+  raw_height: 2160
+  val_ratio: 0.1
+
+  use_wb: true
+  wb_cache: "v5/cache"
+
+model:
+  in_channels: 4
+  out_channels: 12
+  base_channels: 32
+  num_levels: 4
+  norm: "instance"
+
+train:
+  epochs: 50
+  batch_size: 8
+  patch_size: 512
+  lr: 0.0001
+  weight_decay: 0.0
+  num_workers: 4
+  amp: true
+  grad_clip: 1.0
+  warmup_epochs: 2
+  seed: 42
+
+  l1_weight: 1.0
+  ssim_weight: 0.15
+  perceptual: false
+  perceptual_weight: 0.05
+
+  # Canon 的 gR 分布更宽（p5=1.45 → p95=3.25），基线 PSNR 也更低（18.84）。
+  # 场景光照变化更大 → 色度估计的不确定性更高，色度损失略微加码到 0.12。
+  chroma_weight: 0.12
+  select_metric: "psnr"
+
+  log_dir: "v5/logs/canon"
+  ckpt_dir: "v5/checkpoints/canon"
+  resume: ""
+
+eval:
+  metrics: ["psnr", "ssim", "lpips"]
+  lpips_net: "alex"
+  output_dir: "v5/results/canon"
+  save_images: true
+  num_samples: 4
+  run_baseline: true
+  baseline_method: "clahe"

@@ -1,43 +1,57 @@
-# 数字图像处理课程实习
+# hw2 · 图像增强（RAW 色彩恢复）
 
-武汉大学遥感信息工程学院 · 数字图像处理课程实习（2025 级）三项作业的代码与结果归档。
+数字图像处理实习一。将相机 RAW 线性数据还原为观感正确的彩色图像，处理重点在色彩恢复与色调映射。
 
-## 分支结构
+## 两套实现
 
-三项作业的代码**互不混杂**，各自独立分支：
+| 目录 | 定位 |
+|---|---|
+| `图像增强/` | 迭代主线 v1–v5。`src/` 为基础实现，`v5/code/` 为第五轮改进版（含 `scripts/` 实验脚本与 `src/` 网络结构） |
+| `图像增强2/` | 重构版 `canon_enhance` 包。模块化程度更高，带单元测试、验收检查、EMA、批量推理 |
 
-| 分支 | 作业 | 内容 |
+两套代码**不是重复**，`train.py` 等文件 MD5 不同，是不同轮次的不同实现。若要复现最终结论，以 `图像增强2/` 为准；`图像增强/v5/` 保留了改进过程的中间版本。
+
+## 结果指标
+
+已在仓库内的 CSV 结果表（无需重跑）：
+
+- `图像增强2/源代码.../results/baseline_metrics.csv`、`final_metrics.csv`
+- `图像增强/v5/.backup_csv/{Canon,Sony}/{baseline,results}.csv`、`logs/train_log.csv`
+
+## 运行
+
+```powershell
+cd 图像增强2
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install torch==2.11.0 torchvision==0.26.0 --index-url https://download.pytorch.org/whl/cu128
+python -m pip install -r requirements-lock.txt
+
+python -m unittest discover -s tests -v     # 自检
+python -m canon_enhance.prepare             # 读取 1000 对数据、建 GT 缓存、划分场景分组
+```
+
+训练与续训命令见 `图像增强2/部署文档.md`。
+
+## 数据准备（必须，数据未上传）
+
+- 输入为 1000 对 RAW / JPEG，放在**外部只读目录**，路径由 `图像增强2/configs/canon.json` 指定
+- 预留约 **60 GB** 磁盘：GT 解码缓存约 25 GB，加上中间 PNG、模型与日志
+- 程序会校验权重与数据清单指纹，数据、场景划分、色彩标定、训练与推理配置必须配套
+- 随机种子固定，但 GPU 内核允许性能优化，不承诺跨设备逐位一致
+
+## 环境
+
+PyTorch 2.11.0+cu128 / torchvision 0.26.0，实测于 RTX 5060 Laptop 8 GB。精确版本见 `图像增强2/requirements-lock.txt`。
+
+## 本分支未包含
+
+| 内容 | 体积 | 原因 |
 |---|---|---|
-| `main` | — | 总览说明、`.gitignore`、综合实习报告 |
-| `hw1-geometric-correction` | 实习二 · 文档图像几何校正 | 基线实现、UVDoc / DocGeoNet 对照、评价脚本与结果表 |
-| `hw2-image-enhancement` | 实习一 · 图像增强（RAW 色彩恢复） | v1–v5 迭代主线 + 重构版实现、配置、结果指标 |
-| `hw3-image-compression` | 实习三 · 图像压缩 | 自研 DCT 编码器、AVIF 对照、基准与绘图脚本 |
+| `图像增强2/artifacts/` | 55.9 GB | 运行产物与检查点 |
+| `图像增强/data/` | 34.8 GB | 原始数据集 |
+| `图像增强/outputs/` | 14.5 GB | 训练输出 |
+| 训练检查点 `*.pt` | 单个 188–252 MB | **超过 GitHub 单文件 100 MiB 硬限制，无法上传** |
+| `图像增强2/源代码（含部署文档）及结果数据表格/` | — | 与父目录逐字节重复 |
 
-切换作业：`git checkout hw2-image-enhancement`
-
-## 关于数据与权重的说明
-
-**原始数据不在本仓库内。** 三项作业的输入数据合计约 123 GB（RAW 原图、JPEG、中间缓存、渲染产物），远超 GitHub 单文件 100 MiB / 仓库 5 GB 的建议上限，无法托管。
-
-各分支 `README.md` 中写明了数据从哪来、解压到哪里、需要多少磁盘空间。代码、配置、依赖清单、评价脚本和结果指标表均完整保留，按说明备好数据即可复现。
-
-同样因体积原因未上传的还有：`hw2` 的训练检查点（单文件 188–252 MB，超过 GitHub 硬限）。
-
-## 报告
-
-`report/` 下为综合实习报告（PDF 与 DOCX 各一份），DOCX 由 `output/` 中的脚本从 Markdown 与图表源生成。
-
-## 目录
-
-```
-├── README.md                      本文件
-├── .gitignore
-├── report/
-│   ├── 数字图像处理课程实习报告.pdf
-│   ├── 数字图像处理综合实习报告_修订版.docx
-│   ├── src/                       报告生成与校对脚本
-│   └── ...
-└── output/                        报告构建产物与图表
-```
-
-分支内另见各作业的独立说明。
+检查点未上传意味着无法直接推理，但训练流程、配置与结果指标完整，按 `部署文档.md` 可从数据重新训练。
